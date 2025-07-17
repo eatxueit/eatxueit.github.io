@@ -5,7 +5,7 @@ layout: none
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Poet Biography</title>
+  <title>Lev Xue</title>
   <link rel="stylesheet" href="https://unpkg.com/terminal.css@0.7.4/dist/terminal.min.css" />
   <style>
   body {
@@ -75,17 +75,20 @@ layout: none
 
      const bioText = `{{ bioText | markdownify | strip_newlines }}`;
     const listText = `{{ listText | markdownify | strip_newlines }}`;
+    const selfieText = `<p> nah </p>`;
     const helpText = `
         Available commands:
             help    - show this help message
             list    - list published works
             bio     - short biography
+            selfie  - get a picture of me
             clear   - clear the screen,
     `;
     const commands = {
       help: helpText,
       list: listText,
       bio: bioText,
+      selfie: selfieText,
       clear: ''
     };
 
