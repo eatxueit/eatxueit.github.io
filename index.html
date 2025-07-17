@@ -1,0 +1,118 @@
+---
+layout: none
+---
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poet Biography</title>
+  <link rel="stylesheet" href="https://unpkg.com/terminal.css@0.7.4/dist/terminal.min.css" />
+  <style>
+  body {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-rows: 100vh;
+      gap: 1rem;
+      padding: 2rem;
+    }
+
+    .bio-box {
+      grid-column: 2 / 3;
+      align-self: center;
+      justify-self: start;
+      padding: 1rem;
+      max-width: 850px;
+      min-height: 300px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .terminal-output {
+      margin-bottom: 1em;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+    }
+
+    .prompt {
+      margin-right: 0.5em;
+    }
+
+    .terminal-input {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 1em;
+      outline: none;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body class="terminal">
+  <div class="bio-box" id="terminal">
+    <div class="terminal-output" id="output">
+        <p>{{ "If you see this, Jekyll is working ✅" }}</p>
+      Welcome to the Poet Terminal.
+      Type <code>help</code> to see available commands.
+    </div>
+    <div class="input-line">
+      <span class="prompt">&gt;</span>
+      <input type="text" class="terminal-input" id="input" autofocus />
+    </div>
+  </div>
+
+  <div>
+    <!-- Optional right-side content -->
+  </div>
+    {% capture bioText %}{% include bio.md %}{% endcapture %}
+  {% capture listText %}{% include works.md %}{% endcapture %}
+  <script>
+    const input = document.getElementById('input');
+    const output = document.getElementById('output');
+    const terminal = document.getElementById('terminal');
+
+     const bioText = `{{ bioText | strip_newlines }}`;
+    const listText = `{{ listText | strip_newlines }}`;
+    const helpText = `
+        Available commands:
+            help    - show this help message
+            list    - list major works
+            bio     - short biography
+            clear   - clear the screen,
+    `;
+    const commands = {
+      help: helpText,
+      list: listText,
+      bio: bioText,
+      clear: ''
+    };
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const command = input.value.trim();
+        const cmdDisplay = `> ${command}`;
+        const result = commands[command] !== undefined ? commands[command] : `Command not found: ${command}`;
+
+        // Create new lines in output
+        const newLines = document.createElement('div');
+        newLines.innerText = `${cmdDisplay}\n${result}`;
+        output.appendChild(newLines);
+
+        // Scroll to bottom
+        terminal.scrollTop = terminal.scrollHeight;
+
+        // Clear screen for 'clear' command
+        if (command === 'clear') {
+          output.innerHTML = '';
+        }
+
+        input.value = '';
+      }
+    });
+  </script>
+
+</body>
+</html>
