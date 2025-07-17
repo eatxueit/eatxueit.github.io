@@ -54,7 +54,6 @@ layout: none
 <body class="terminal">
   <div class="bio-box" id="terminal">
     <div class="terminal-output" id="output">
-        <p>{{ "If you see this, Jekyll is working ✅" }}</p>
       Welcome to the Poet Terminal.
       Type <code>help</code> to see available commands.
     </div>
@@ -67,19 +66,19 @@ layout: none
   <div>
     <!-- Optional right-side content -->
   </div>
-    {% capture bioText %}{% include bio.md %}{% endcapture %}
+  {% capture bioText %}{% include bio.md %}{% endcapture %}
   {% capture listText %}{% include works.md %}{% endcapture %}
   <script>
     const input = document.getElementById('input');
     const output = document.getElementById('output');
     const terminal = document.getElementById('terminal');
 
-     const bioText = `{{ bioText | strip_newlines }}`;
-    const listText = `{{ listText | strip_newlines }}`;
+     const bioText = `{{ bioText | markdownify | strip_newlines }}`;
+    const listText = `{{ listText | markdownify | strip_newlines }}`;
     const helpText = `
         Available commands:
             help    - show this help message
-            list    - list major works
+            list    - list published works
             bio     - short biography
             clear   - clear the screen,
     `;
@@ -98,7 +97,8 @@ layout: none
 
         // Create new lines in output
         const newLines = document.createElement('div');
-        newLines.innerText = `${cmdDisplay}\n${result}`;
+        newLines.innerHTML = `<div class="command-line">&gt;${command}</div>
+            <div class="command-output">${result}</div>`;
         output.appendChild(newLines);
 
         // Scroll to bottom
